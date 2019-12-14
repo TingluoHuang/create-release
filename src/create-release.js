@@ -3,8 +3,10 @@ const { GitHub, context } = require('@actions/github');
 
 async function run() {
   try {
+    const opts = {}
+    opts.log = console
     // Get authenticated GitHub client (Ocktokit): https://github.com/actions/toolkit/tree/master/packages/github#usage
-    const github = new GitHub(process.env.GITHUB_TOKEN);
+    const github = new GitHub(process.env.GITHUB_TOKEN, opts);
 
     // Get owner and repo from context of payload that triggered the action
     const { owner, repo } = context.repo;
@@ -16,6 +18,7 @@ async function run() {
     const tag = tagName.replace('refs/tags/', '');
     const releaseName = core.getInput('release_name', { required: true }).replace('refs/tags/', '');
     const body = core.getInput('body', { required: false });
+    console.log(body)
     const draft = core.getInput('draft', { required: false }) === 'true';
     const prerelease = core.getInput('prerelease', { required: false }) === 'true';
 
